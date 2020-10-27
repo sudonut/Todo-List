@@ -2,10 +2,12 @@
 const todoInput = document.querySelector(".todo-input");
 const todoButton = document.querySelector(".todo-button");
 const todoList = document.querySelector(".todo-list");
+const filterOption = document.querySelector(".filter-todo");
 
 //Event Listeners
 todoButton.addEventListener("click", addTodo);
 todoList.addEventListener('click', deleteCheck);
+filterOption.addEventListener('click', filterTodo);
 
 
 //Functions
@@ -53,10 +55,35 @@ function deleteCheck(event){
     // CHECK MARK
     if(item.classList[0] === 'complete-btn'){
         const todo = item.parentElement;
-        todo.classList.toggle('completed');
+        todo.classList.toggle("completed");
     }
 }
 
 function filterTodo(e){
-    
+    //This variable will grab a list of all childNodes within todoList.
+    const todos = todoList.childNodes;
+    todos.forEach(function(todo) {
+        switch (e.target.value) {
+            // By defualt show all tasks whether completed or uncompleted.
+            case "all":
+                todo.style.display = "flex";
+                break;
+            case "completed":
+                //Only show the tasks with a class of completed.
+                if (todo.classList.contains("completed")) {
+                    todo.style.display = "flex";
+                } else {
+                  todo.style.display = "none";
+                }
+                break;
+            case "uncompleted":
+                // If the ul list does NOT contain 'completed' in the class, display only uncompleted tasks.
+                if(!todo.classList.contains('completed')){
+                    todo.style.display = "flex";
+                } else {
+                    todo.style.display = "none"
+                }
+                break;
+            }
+    });
 }
